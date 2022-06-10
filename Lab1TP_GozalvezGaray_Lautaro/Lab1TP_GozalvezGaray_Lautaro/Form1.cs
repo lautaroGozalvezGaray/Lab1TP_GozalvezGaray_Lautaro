@@ -151,6 +151,9 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                     break;
                 }
             }
+
+            //dejamos en blanco el espacio de la patente
+            txtDominio.Text = "";
         }
 
         private void txtBuscarDominio_KeyPress(object sender, KeyPressEventArgs e)
@@ -190,10 +193,10 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
                     lblUbicacion.Text = estacionamiento[i].cochera.ToString();
 
-                    lblIngreso.Text = estacionamiento[i].ingreso.ToLongTimeString();
+                    lblIngreso.Text = estacionamiento[i].ingreso.ToShortDateString()+" "+ estacionamiento[i].ingreso.ToLongTimeString();
                     DateTime timeIngreso = estacionamiento[i].ingreso;
 
-                    lblEgreso.Text = TimeEgreso.ToLongTimeString();
+                    lblEgreso.Text = TimeEgreso.ToShortDateString()+" "+TimeEgreso.ToLongTimeString();
 
                     //se define una variable para almacenar el precio en fuincion del tiempo que estuvo el vehiculo
                     double costo;
@@ -208,6 +211,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                         costo = ((TimeEgreso - timeIngreso).TotalMinutes) * 3;
                         lblImporte.Text = costo.ToString("#.00");
                     }
+                    break;
 
                 }
                 else
