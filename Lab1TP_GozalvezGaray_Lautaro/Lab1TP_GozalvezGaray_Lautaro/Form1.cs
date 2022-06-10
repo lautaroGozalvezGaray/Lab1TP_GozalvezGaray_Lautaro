@@ -48,7 +48,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             }
 
             //se inicializa la variable cantidad
-            cantidad = 0;
+            cantidad = 1;
 
             //estado inicial de los btn
 
@@ -70,6 +70,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             }
         }
 
+        //se hace mayuscula el txt de dominio
         private void txtDominio_KeyPress(object sender, KeyPressEventArgs e)
         {
             if (Char.IsLower(e.KeyChar) == true) // revisa si es minuscula
@@ -83,26 +84,162 @@ namespace Lab1TP_GozalvezGaray_Lautaro
         private void txtDominio_TextChanged(object sender, EventArgs e)
         {
             
+            //se verifica si la patente cuenta con 6 o 7 digitos
+
+            if (checkLstBox() == true && (txtDominio.Text.Length == 7 || txtDominio.Text.Length == 6))
+            {
+                btnIngresar.Enabled = true;
+            }
+            else
+            {
+                btnIngresar.Enabled = false;
+            }
+
+            /*
             string dominio = txtDominio.Text;
             char[] charDominio = dominio.ToCharArray();
             if (charDominio.Length == 6)
             {
                 for (int i = 0; i <= 3; i++)
                 {
-                    
+                    charDominio[i]= ????;
                 }
             }
             else
             {
                 btnIngresar.Enabled = false;
             }
-            
+            */
+
+
         }
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
+            //variable para contolar los ciclos
+            int i;
+
+            //procedimiento para agregar nuevos choches
+            if (cantidad < MAX)//se corrobora si hay lugar
+            {
+                //ciclo for para agregar un vehiculo en el primer lugar vacio que se encuentre
+                for (i = 0; i < MAX; i++)
+                {
+                    if (estacionamiento[i].dominio == "")
+                    {
+                        estacionamiento[i].dominio = txtDominio.Text;
+                        estacionamiento[i].tipo = cboVehiculo.GetItemText(cboVehiculo.SelectedItem);
+                        estacionamiento[i].cochera = lstCochera.SelectedIndex+1;
+                        estacionamiento[i].ingreso = DateTime.Now;
+
+                        cantidad++;
+
+                        break;
+                    }
+                }
+            }
+            else{
+                MessageBox.Show("Ya no quedan lugares disponibles", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+
+            //for para remover el elemento que se selecciono de la lista.
+            for(i=0; i<MAX; i++)
+            {
+                if(estacionamiento[i].cochera != 0)
+                {
+                    lstCochera.Items.RemoveAt(lstCochera.SelectedIndex);
+                    break;
+                }
+            }
+        }
+
+        private void txtBuscarDominio_KeyPress(object sender, KeyPressEventArgs e)
+        {
+            if (Char.IsLower(e.KeyChar) == true) // revisa si es minuscula
+            {
+                e.KeyChar = Char.ToUpper(e.KeyChar); // si lo es, la convierte en la mayuscula
+            }
+        }
+
+        // se valida si la patente cuenta con 6 o 7 digitos
+        private void txtBuscarDominio_TextChanged(object sender, EventArgs e)
+        {
+            if (txtBuscarDominio.Text.Length == 7 || txtBuscarDominio.Text.Length == 6)
+            {
+                btnBuscar.Enabled = true;
+            }
+            else
+            {
+                btnBuscar.Enabled = false;
+            }
+        }
+
+        private void btnBuscar_Click(object sender, EventArgs e)
+        {
+            //variable para definir la hora de egreso
+
+            DateTime TimeEgreso = DateTime.Now;
+
+            //ciclo for para buscar el vehiculo de acuerdo a la patente
+            for (int i = 0; i < MAX; i++)
+            {
+                if (estacionamiento[i].dominio == txtBuscarDominio.Text)
+                {
+
+                    estacionamiento[i].tipo = lblTipoVehiculo.Text;
+
+                    lblUbicacion.Text = estacionamiento[i].cochera.ToString();
+
+                    lblIngreso.Text = estacionamiento[i].ingreso.ToLongTimeString();
+                    DateTime timeIngreso = estacionamiento[i].ingreso;
+
+                    lblEgreso.Text = TimeEgreso.ToLongTimeString();
+
+                    //se define una variable para almacenar el precio en fuincion del tiempo que estuvo el vehiculo
+                    double costo;
+
+                    if (cboVehiculo.SelectedIndex == 0)
+                    {
+                        costo = ((TimeEgreso - timeIngreso).TotalMinutes) * 2.5;
+                        lblImporte.Text = costo.ToString("#.00");
+                    }
+                    else
+                    {
+                        costo = ((TimeEgreso - timeIngreso).TotalMinutes) * 3;
+                        lblImporte.Text = costo.ToString("#.00");
+                    }
+
+                }
+                else
+                {
+                    MessageBox.Show("No se encontró la patente", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+                }
+            }
+
 
         }
 
+        private bool checkLstBox()//funcion para devolver true o false si esta seleccionado un elemento del listBox
+        {
+            bool resultado = false;
+            if (lstCochera.SelectedIndex >= 0 && lstCochera.SelectedIndex <= 50)
+            {
+                resultado = true;
+            }
+
+            return resultado;
+            
+        }
+       
+
+        
+
+        private void lstCochera_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        
     }
 }
