@@ -179,6 +179,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             this.btnEgresar.TabIndex = 20;
             this.btnEgresar.Text = "&Egresar";
             this.btnEgresar.UseVisualStyleBackColor = false;
+            this.btnEgresar.Click += new System.EventHandler(this.btnEgresar_Click);
             // 
             // btnBuscar
             // 
