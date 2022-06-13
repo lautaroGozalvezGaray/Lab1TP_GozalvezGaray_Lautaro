@@ -99,8 +99,9 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
+            //se comprueba que la patente se de un formato u otro.
             string dominio = txtDominio.Text;
-            char[] charDominio = dominio.ToCharArray();
+            char[] charDominio = dominio.ToCharArray();//se almacena la patente y luego se crea un array a partir del string
 
             bool resultado = true;
 
@@ -200,7 +201,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
                     lblTipoVehiculo.Text = estacionamiento[i].tipo;
 
-                    lblUbicacion.Text = estacionamiento[i].cochera.ToString();
+                    lblUbicacion.Text = (estacionamiento[i].cochera +1).ToString();
 
                     lblIngreso.Text = estacionamiento[i].ingreso.ToShortDateString() + " " + estacionamiento[i].ingreso.ToLongTimeString();
                     DateTime timeIngreso = estacionamiento[i].ingreso;
@@ -252,7 +253,19 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
             }
 
-            lstCochera.Items.Insert((int.Parse(lblUbicacion.Text)-1), lblUbicacion.Text);
+            //lstCochera.Items.Insert((int.Parse(lblUbicacion.Text)-1), lblUbicacion.Text);
+            int numeros = 1;
+            lstCochera.Items.Clear();
+            for (int i = 1; i < MAX; i++)
+            {
+
+                if (estacionamiento[i].cochera != numeros)
+                {
+                    lstCochera.Items.Add(i);
+                }
+
+                numeros++;
+            }
 
             
 
@@ -268,21 +281,18 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
         private void AgregarVehiculo()
         {
-     
-                //variable para contolar los ciclos
-                int i;
 
                 //procedimiento para agregar nuevos choches
                 if (cantidad < MAX)//se corrobora si hay lugar
                 {
                     //ciclo for para agregar un vehiculo en el primer lugar vacio que se encuentre
-                    for (i = 0; i < MAX; i++)
+                    for (int i = 0; i < MAX; i++)
                     {
                         if (estacionamiento[i].dominio == "")
                         {
                             estacionamiento[i].dominio = txtDominio.Text;
                             estacionamiento[i].tipo = cboVehiculo.Text;
-                            estacionamiento[i].cochera = int.Parse(lstCochera.Text);
+                            estacionamiento[i].cochera = int.Parse(lstCochera.Text)-1; //lstCochera.SelectedIndex;
                             estacionamiento[i].ingreso = DateTime.Now;
 
                             cantidad++;
@@ -297,9 +307,9 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
 
                 //for para remover el elemento que se selecciono de la lista.
-                for (i = 0; i < MAX; i++)
+                for (int j = 0; j < MAX; j++)
                 {
-                    if (estacionamiento[i].cochera != 0)
+                    if (estacionamiento[j].cochera != 0)
                     {
                         lstCochera.Items.Remove(lstCochera.SelectedItem);
                         break;
@@ -327,9 +337,13 @@ namespace Lab1TP_GozalvezGaray_Lautaro
         {
             MessageBox.Show("Debe ingresar un formato de patente XX999XX o XXX999", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
         }
-       
 
-        
+        private void button1_Click(object sender, EventArgs e)
+        {
+            this.Close();
+        }
+
+
 
         private void lstCochera_SelectedIndexChanged(object sender, EventArgs e)
         {
