@@ -45,6 +45,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 estacionamiento[i].dominio = "";
                 estacionamiento[i].tipo = "";
                 estacionamiento[i].cochera = 0;
+                estacionamiento[i].ingreso = DateTime.MinValue;
             }
 
             //se inicializa la variable cantidad
@@ -83,10 +84,9 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
         private void txtDominio_TextChanged(object sender, EventArgs e)
         {
-            
             //se verifica si la patente cuenta con 6 o 7 digitos
 
-            if (checkLstBox() == true && (txtDominio.Text.Length == 7 || txtDominio.Text.Length == 6))
+            if (lstCochera.Text != "" && (txtDominio.Text.Length == 7 || txtDominio.Text.Length == 6))
             {
                 btnIngresar.Enabled = true;
             }
@@ -249,25 +249,26 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                     estacionamiento[i].dominio = "";
                     estacionamiento[i].tipo = "";
                     estacionamiento[i].cochera = 0;
-                    // estacionamiento[i].ingreso = ;
+                    estacionamiento[i].ingreso = DateTime.MinValue;
                 }
             }
 
             //lstCochera.Items.Insert((int.Parse(lblUbicacion.Text)-1), lblUbicacion.Text);
+
             int numeros = 1;
+
             lstCochera.Items.Clear();
-            for (int i = 1; i < MAX; i++)
+
+            for (int i = 1; i <= MAX; i++)
             {
 
-                if (estacionamiento[i].cochera != numeros)
+                if (estacionamiento[i-1].cochera != numeros)
                 {
                     lstCochera.Items.Add(i);
                 }
 
                 numeros++;
             }
-
-            
 
             txtBuscarDominio.Text = "";
             lblIngreso.Text = "";
@@ -292,7 +293,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                         {
                             estacionamiento[i].dominio = txtDominio.Text;
                             estacionamiento[i].tipo = cboVehiculo.Text;
-                            estacionamiento[i].cochera = int.Parse(lstCochera.Text)-1; //lstCochera.SelectedIndex;
+                            estacionamiento[i].cochera = int.Parse(lstCochera.Text)-1;
                             estacionamiento[i].ingreso = DateTime.Now;
 
                             cantidad++;
@@ -321,17 +322,6 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             cboVehiculo.SelectedIndex = 0;
         }
 
-        private bool checkLstBox()//funcion para devolver true o false si esta seleccionado un elemento del listBox
-        {
-            bool resultado = false;
-            if (lstCochera.SelectedIndex >= 0 && lstCochera.SelectedIndex <= 50)
-            {
-                resultado = true;
-            }
-
-            return resultado;
-            
-        }
 
         private void mensajeError()
         {
