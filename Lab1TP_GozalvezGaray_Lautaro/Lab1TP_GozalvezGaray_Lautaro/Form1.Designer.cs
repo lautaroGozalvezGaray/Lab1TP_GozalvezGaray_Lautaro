@@ -285,7 +285,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(70, 17);
             this.label6.TabIndex = 9;
-            this.label6.Text = "Ubicacion";
+            this.label6.Text = "Ubicación";
             // 
             // label5
             // 
@@ -294,7 +294,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(114, 17);
             this.label5.TabIndex = 8;
-            this.label5.Text = "Tipo de Vehiculo";
+            this.label5.Text = "Tipo de Vehículo";
             // 
             // label4
             // 

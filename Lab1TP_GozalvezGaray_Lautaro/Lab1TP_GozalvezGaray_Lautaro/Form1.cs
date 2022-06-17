@@ -59,7 +59,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
             //se agrega elementos a tipo de vehiculo
 
-            cboVehiculo.Items.Add("Vehiculo");
+            cboVehiculo.Items.Add("Automóvil");
             cboVehiculo.Items.Add("Utilitario");
             cboVehiculo.SelectedIndex = 0;
 
@@ -99,7 +99,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
         private void btnIngresar_Click(object sender, EventArgs e)
         {
-            //se comprueba que la patente se de un formato u otro.
+            //se comprueba que la patente sea de un formato u otro.
             string dominio = txtDominio.Text;
             char[] charDominio = dominio.ToCharArray();//se almacena la patente y luego se crea un array a partir del string
 
@@ -158,6 +158,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
             }
 
+            //si la patente es correcta se agrega al vehiculo
             if (resultado == true)
             {
                 AgregarVehiculo();
@@ -201,7 +202,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
                     lblTipoVehiculo.Text = estacionamiento[i].tipo;
 
-                    lblUbicacion.Text = (estacionamiento[i].cochera +1).ToString();
+                    lblUbicacion.Text = (estacionamiento[i].cochera).ToString();
 
                     lblIngreso.Text = estacionamiento[i].ingreso.ToShortDateString() + " " + estacionamiento[i].ingreso.ToLongTimeString();
                     DateTime timeIngreso = estacionamiento[i].ingreso;
@@ -211,7 +212,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                     //se define una variable para almacenar el precio en fuincion del tiempo que estuvo el vehiculo
                     double costo;
 
-                    if (cboVehiculo.SelectedIndex == 0)
+                    if (estacionamiento[i].tipo == "Automóvil")
                     {
                         costo = ((TimeEgreso - timeIngreso).TotalMinutes) * 2.5;
                         lblImporte.Text = costo.ToString("#.00");
@@ -232,6 +233,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
             if (i == MAX)
             {
                 MessageBox.Show("No se encontró la patente", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                txtBuscarDominio.Text = "";
 
             }
 
@@ -253,22 +255,40 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
             }
 
-            //lstCochera.Items.Insert((int.Parse(lblUbicacion.Text)-1), lblUbicacion.Text);
+            lstCochera.Items.Clear();
 
+            for (int i = 1; i<=50; i++)
+            {
+                bool disponible = false;
+                for(int j = 0; j<50; j++)
+                {
+                    if (i == estacionamiento[j].cochera)
+                    {
+                        disponible = true;
+                    }
+                }
+                if (disponible == false)
+                {
+                    lstCochera.Items.Add(i);
+                }
+            }
+           
+            /*
             int numeros = 1;
-
+            
             lstCochera.Items.Clear();
 
             for (int i = 1; i <= MAX; i++)
             {
-
-                if (estacionamiento[i-1].cochera != numeros)
+                
+                if (estacionamiento[i].cochera == numeros)
                 {
                     lstCochera.Items.Add(i);
                 }
 
                 numeros++;
             }
+            */
 
             txtBuscarDominio.Text = "";
             lblIngreso.Text = "";
@@ -293,7 +313,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                         {
                             estacionamiento[i].dominio = txtDominio.Text;
                             estacionamiento[i].tipo = cboVehiculo.Text;
-                            estacionamiento[i].cochera = int.Parse(lstCochera.Text)-1;
+                            estacionamiento[i].cochera = int.Parse(lstCochera.Text);
                             estacionamiento[i].ingreso = DateTime.Now;
 
                             cantidad++;
@@ -308,7 +328,7 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
 
                 //for para remover el elemento que se selecciono de la lista.
-                for (int j = 0; j < MAX; j++)
+                for (int j = 0; j <= MAX; j++)
                 {
                     if (estacionamiento[j].cochera != 0)
                     {
