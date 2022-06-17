@@ -255,8 +255,10 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                 }
             }
 
+
             lstCochera.Items.Clear();
 
+            //ciclos for anidados para agregar la ubicacion que se libera unicamente
             for (int i = 1; i<=50; i++)
             {
                 bool disponible = false;
@@ -272,23 +274,8 @@ namespace Lab1TP_GozalvezGaray_Lautaro
                     lstCochera.Items.Add(i);
                 }
             }
-           
-            /*
-            int numeros = 1;
-            
-            lstCochera.Items.Clear();
 
-            for (int i = 1; i <= MAX; i++)
-            {
-                
-                if (estacionamiento[i].cochera == numeros)
-                {
-                    lstCochera.Items.Add(i);
-                }
-
-                numeros++;
-            }
-            */
+            //se reestablecen los label
 
             txtBuscarDominio.Text = "";
             lblIngreso.Text = "";
@@ -302,43 +289,36 @@ namespace Lab1TP_GozalvezGaray_Lautaro
 
         private void AgregarVehiculo()
         {
-
-                //procedimiento para agregar nuevos choches
-                if (cantidad < MAX)//se corrobora si hay lugar
+            //procedimiento para agregar nuevos choches
+            if (cantidad < MAX)//se corrobora si hay lugar
+            {
+                //ciclo for para agregar un vehiculo en el primer lugar vacio que se encuentre
+                for (int i = 0; i < MAX; i++)
                 {
-                    //ciclo for para agregar un vehiculo en el primer lugar vacio que se encuentre
-                    for (int i = 0; i < MAX; i++)
+                    if (estacionamiento[i].dominio == "")
                     {
-                        if (estacionamiento[i].dominio == "")
-                        {
-                            estacionamiento[i].dominio = txtDominio.Text;
-                            estacionamiento[i].tipo = cboVehiculo.Text;
-                            estacionamiento[i].cochera = int.Parse(lstCochera.Text);
-                            estacionamiento[i].ingreso = DateTime.Now;
+                        estacionamiento[i].dominio = txtDominio.Text;
+                        estacionamiento[i].tipo = cboVehiculo.Text;
+                        estacionamiento[i].cochera = int.Parse(lstCochera.Text);
+                        estacionamiento[i].ingreso = DateTime.Now;
 
-                            cantidad++;
+                        cantidad++;
 
-                            break;
-                        }
-                    }
-                }
-                else
-                {
-                    MessageBox.Show("Ya no quedan lugares disponibles", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-
-                //for para remover el elemento que se selecciono de la lista.
-                for (int j = 0; j <= MAX; j++)
-                {
-                    if (estacionamiento[j].cochera != 0)
-                    {
-                        lstCochera.Items.Remove(lstCochera.SelectedItem);
                         break;
                     }
                 }
+            }
+            else
+            {
+                MessageBox.Show("Ya no quedan lugares disponibles", "ERROR", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
 
-                //dejamos en blanco el espacio de la patente
-                txtDominio.Text = "";
+            //remover el elemento que se selecciono de la lista.
+
+            lstCochera.Items.Remove(lstCochera.SelectedItem);
+
+            //dejamos en blanco el espacio de la patente
+            txtDominio.Text = "";
             cboVehiculo.SelectedIndex = 0;
         }
 
